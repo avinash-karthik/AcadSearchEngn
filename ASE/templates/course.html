@@ -1,0 +1,53 @@
+{# Course page #}
+
+{% extends "base.html" %}
+
+{% load tags %}
+
+{% if course %}
+  {% block title %} {{course.code}} {% endblock %}
+{% endif %}
+
+{% block content %}
+  
+  {% if course %}
+    <div class="jumbotron">
+      <h1> {{course.code}} </h1><hr>
+    </div>
+
+    <table class="table table-striped">
+      {% for field in form %}
+        {% if field.value %}
+          <tr>
+            <td><b> {{field.label}} </b></td>
+            <td> {{field.value}} </td>
+          </tr>
+        {% endif %}
+      {% endfor %}
+      
+      {% if course.coordinator %}
+        <tr>
+          <td><b> {% get_verbose_field_name course "coordinator" %} </b></td>
+          <td><a href="{% url 'faculty' course.coordinator.id %}">{{course.coordinator.name}}</a></td>
+        </tr>
+      {% endif %}
+
+      {% if course.instructors.all %}
+        <tr>
+          <td><b> {% get_verbose_field_name course "instructors" %} </b></td>
+          <td>
+            <ul style="list-style-type:none; padding:0px">
+              {% for instructor in course.instructors.all %}
+                <li><a href="{% url 'faculty' instructor.pk %}">{{instructor.name}}</a></li>
+              {% endfor %}
+            </ul>
+          </td>
+        </tr>
+      {% endif %}
+    </table>
+
+  {% else %}
+    <p> {{error}} </p>
+  {% endif %}
+
+{% endblock %}

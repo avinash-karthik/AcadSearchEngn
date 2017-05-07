@@ -1,0 +1,70 @@
+{# Base Template which is followed throught the website #}
+
+{% load static %}
+{% load tags %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>{% block title %}IITD Academic Search Engine{% endblock %}</title>
+    <!-- Bootstrap -->
+    {% block head-css %}
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+      <link rel="stylesheet" type="text/css" href="{% static 'css/jumbotron.css' %}" />
+      <link rel="stylesheet" type="text/css" href="{% static 'styles.css' %}" />
+    {% endblock %}
+
+    {% block head-javascript %}
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+      <script src="{% static 'js/custom.js' %}"></script>
+    {% endblock %}
+  </head>
+
+  <body>
+    <div class="container">
+      {% block header %}
+        <nav class="navbar navbar-default">
+          <div class="container-fluid">
+            <div class="navbar-header">
+              <a class="navbar-brand" href="{% url 'home' %}">IIT Delhi Academic Search Engine</a>
+            </div>
+            <ul class="nav navbar-nav pull-right">
+              {% if user.is_authenticated %}
+                <li class="{% active_page request 'home' %}"><a href="{% url 'home' %}">Home</a></li>
+                <li class="{% active_page request 'my_requests' %}"><a href="{% url 'my_requests' %}">My Requests</a></li>
+                {% if user|has_group:"Moderator" %}
+                  <li class="{% active_page request 'moderate' %}"><a href="{% url 'moderate' %}">Moderate</a></li>
+                {% endif %}
+                <li class="dropdown {% active_page request 'add' %}">
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown">Add <b class="caret"></b></a>
+                  <ul class="dropdown-menu">
+                    <li><a href="{% url 'add_student' %}">Student</a></li>
+                    <li><a href="{% url 'add_faculty' %}">Faculty</a></li>
+                    <li><a href="{% url 'add_course' %}">Course</a></li>
+                    <li><a href="{% url 'add_project' %}">Project</a></li>
+                  </ul>
+                </li>
+                <li class="{% active_page request 'logout' %}"><a href="{% url 'logout' %}">Logout</a></li>
+              {% endif %}
+            </ul>
+          </div>
+        </nav>
+      {% endblock %}
+    </div>
+
+    <div class="container">
+      {% block content %}
+        <h2>Welcome to IIT Delhi's Academic Search Engine</h2>
+      {% endblock %}
+    
+      {% block footer %}  
+      {% endblock %}
+    </div>
+  </body>
+</html>

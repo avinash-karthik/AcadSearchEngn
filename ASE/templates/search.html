@@ -1,0 +1,43 @@
+{# Home page or Search page #}
+
+{% extends "base.html" %}
+
+{% block title %} IITD Academic Search Engine {% endblock %}
+
+{% block content %}
+
+  <div class="jumbotron">
+    <form class="form-inline" action="." method="post">
+      {% csrf_token %}
+      <div class="form-group">
+          <input type="text" class="form-control" name="query" placeholder="Search" value="{{query}}" size="50">
+      </div>
+      <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-search"></span></button>
+    </form>
+  </div>
+  
+  <hr>
+  
+  {% if results %}
+    <div class="jumbotron">
+      <p>{{num_results}} result{{ num_results|pluralize }} found{% if num_results %}:{% endif %}</p>
+      {% for category,category_results in results %}
+        {% if category_results|length %}
+          <ul class="list-group">
+            <p> {{category}}: </p>
+            {% for result in category_results %}
+              <li class="list-group-item">
+              <div class="search-result">
+                <span>
+                  <a href="{{result.url}}">{{ result.heading }}</a>
+                </span>
+              </div>
+              </li>
+            {% endfor %}
+          </ul>
+        {% endif %}
+      {% endfor %}
+    </div>
+  {% endif %}
+
+{% endblock %}

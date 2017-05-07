@@ -1,0 +1,27 @@
+{# Login Page #}
+
+{% extends "base.html" %}
+
+{% block title %} Login {% endblock %}
+
+{% block content %}
+
+  <div class="row">
+    <div class="col-md-offset-5 col-md-3">
+      <form class="form-login" action="." method="post">
+        {% csrf_token %}
+        <h4>Please Login</h4>
+        <input type="text" class="form-control input-sm chat-input" placeholder="Kerberos Id" name="username"/>
+        </br>
+        <input type="password" class="form-control input-sm chat-input" placeholder="Kerberos Password" name="password" />
+        </br>
+        <div class="wrapper">
+          <span class="group-btn">     
+            <button type="submit" class="btn btn-primary btn-md">Login<i class="fa fa-sign-in"></i></a>
+          </span>
+        </div>
+      </form>
+    </div>
+  </div>
+
+{% endblock %}

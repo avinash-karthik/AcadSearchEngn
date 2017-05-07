@@ -1,0 +1,41 @@
+{# Request page #}
+
+{% extends "base.html" %}
+
+{% if userRequest %}
+  {% block title %} Request {% endblock %}
+{% endif %}
+
+{% block content %}
+  
+  {% if userRequest %}
+    <div class="jumbotron">
+      <h3>Status: {{userRequest.status}}</h3>
+      {% include 'request_form.html' %}
+    </div>
+
+    {% if userRequest.status != 'Pending' %}
+      <div class="jumbotron">
+        <form class="form">
+          <div class="form-group">
+          	<label for="comment">Comment:</label>
+          	<textarea rows="5" class="form-control" id="comment" readonly>{{userRequest.feedback}}</textarea>
+          </div>
+        </form>
+      </div>
+
+      {% if userRequest.status == 'Rejected' %}
+        <form class="form" action="." method="POST">
+          {% csrf_token %}
+          <div class="form-group">
+            <button type="submit" name="delete_request" class="btn btn-danger" value="Delete">Delete request</button>
+          </div>
+        </form>
+      {% endif %}
+    {% endif %}
+
+  {% else %}
+    <p> {{error}} </p>
+  {% endif %}
+
+{% endblock %}

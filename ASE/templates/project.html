@@ -1,0 +1,52 @@
+{# Project page #}
+
+{% extends "base.html" %}
+
+{% load tags %}
+
+{% if project %}
+  {% block title %} {{project.title}} {% endblock %}
+{% endif %}
+
+{% block content %}
+  
+  {% if project %}
+    <div class="jumbotron">
+      <h1> {{project.title}} </h1><hr>
+    </div>
+
+    <table class="table table-striped">
+      {% for field in form %}
+        {% if field.value %}
+          <tr>
+            <td><b> {{field.label}} </b></td>
+            <td> {{field.value}} </td>
+          </tr>
+        {% endif %}
+      {% endfor %}
+
+      <tr>
+        <td><b> {% get_verbose_field_name project "students" %} </b></td>
+        <td>
+          <ul style="list-style-type:none; padding:0px">
+            {% for student in project.students.all %}
+              <li><a href="{% url 'student' student.pk %}">{{student.name}}</a></li>
+            {% endfor %}
+          </ul>
+      </tr>
+      <tr>
+        <td><b> {% get_verbose_field_name project "advisors" %} </b></td>
+        <td>
+          <ul style="list-style-type:none; padding:0px">
+            {% for advisor in project.advisors.all %}
+              <li><a href="{% url 'faculty' advisor.pk %}">{{advisor.name}}</a></li>
+            {% endfor %}
+          </ul>
+        </td>
+      </tr>
+    </table>
+  {% else %}
+    <p> {{errror}} </p>
+  {% endif %}
+
+{% endblock %}

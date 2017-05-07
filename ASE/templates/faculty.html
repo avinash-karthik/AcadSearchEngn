@@ -1,0 +1,57 @@
+{# Faculty page #}
+
+{% extends "base.html" %}
+
+{% if faculty %}
+  {% block title %} {{faculty.name}} {% endblock %}
+{% endif %}
+
+{% block content %}
+  
+  {% if faculty %}
+    <div class="jumbotron">
+      <h1> {{faculty.name}} </h1><hr>
+    </div>
+
+    <table class="table table-striped">
+      {% for field in form %}
+        {% if field.value %}
+          <tr>
+            <td><b> {{field.label}} </b></td>
+            <td> {{field.value}} </td>
+          </tr>
+        {% endif %}
+      {% endfor %}
+
+      {% if courses %}
+        <tr>
+          <td><b> Courses </b></td>
+          <td>
+            <ul style="list-style-type:none; padding:0px">
+              {% for course in courses %}
+                <li><a href="{% url 'course' course.pk %}">{{course.name}}</a></li>
+              {% endfor %}
+            </ul>
+          </td>
+        </tr>
+      {% endif %}
+
+      {% if projects %}
+        <tr>
+          <td><b> Projects </b></td>
+          <td>
+            <ul style="list-style-type:none; padding:0px">
+              {% for project in projects %}
+                <li><a href="{% url 'project' project.pk %}">{{project.title}}</a></li>
+              {% endfor %}
+            </ul>
+          </td>
+        </tr>
+      {% endif %}
+
+    </table>
+  {% else %}
+    <p> {{errror}} </p>
+  {% endif %}
+
+{% endblock %}

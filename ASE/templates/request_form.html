@@ -1,0 +1,20 @@
+{% load tags %}
+
+<form class="form">
+{% for field in form.visible_fields %}
+  <div class="form-group">
+    {{field.label_tag}}
+    {% if field|is_checkboxes %}
+      <div class="form-group"> 
+        {% for checkbox in field %}
+          <div class="checkbox">
+            {{ checkbox.tag }} {{ checkbox.choice_label }}
+          </div>
+        {% endfor %}
+      </div>
+    {% else %}
+      {{field|addclass:'form-control'}}
+    {% endif %}
+  </div>
+{% endfor %}
+</form>

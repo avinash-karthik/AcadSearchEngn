@@ -1,0 +1,45 @@
+{# Add a new {{model_name}} page #}
+
+{% extends "base.html" %}
+
+{% load tags %}
+
+{% block title %} Add {{model_name}} {% endblock %}
+
+{% block content %}
+  
+  <div class="jumbotron">
+    <form class="form" action="." method="post">
+      {% csrf_token %}
+      {% for field in form.visible_fields %}
+        <div class="form-group">
+          <label for="{{ field.auto_id }}">{{field.label}}
+            {% if field.field.required %}
+              <span class="required">*</span>
+            {% endif %}
+          </label>
+          
+          {% for error in field.errors %}
+            <div class="alert alert-danger">
+                <strong>{{ error|escape }}</strong>
+            </div>
+          {% endfor %}
+          
+          {% if field|is_checkboxes %}
+            <div class="form-group"> 
+              {% for checkbox in field %}
+                <div class="checkbox">
+                  {{ checkbox.tag }} {{ checkbox.choice_label }}
+                </div>
+              {% endfor %}
+            </div>
+          {% else %}
+            {{field|addclass:'form-control'}}
+          {% endif %}
+        </div>
+      {% endfor %}
+      <button type="submit" class="btn btn-primary"> Submit </button>
+    </form>
+  </div>
+
+{% endblock %}

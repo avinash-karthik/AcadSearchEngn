@@ -1,0 +1,43 @@
+{# Student page #}
+
+{% extends "base.html" %}
+
+{% if student %}
+  {% block title %} {{student.name}} {% endblock %}
+{% endif %}
+
+{% block content %}
+  
+  {% if student %}
+    <div class="jumbotron">
+      <h1> {{student.name}} </h1><hr>
+    </div>
+
+    <table class="table table-striped">
+      {% for field in form %}
+        {% if field.value %}
+          <tr>
+            <td><b> {{field.label}} </b></td>
+            <td> {{field.value}} </td>
+          </tr>
+        {% endif %}
+      {% endfor %}
+
+      {% if projects %}
+        <tr>
+          <td><b> Projects </b></td>
+          <td>
+            <ul style="list-style-type:none; padding:0px">
+              {% for project in projects %}
+                <li><a href="{% url 'project' project.pk %}">{{project.title}}</a></li>
+              {% endfor %}
+            </ul>
+          </td>
+        </tr>
+      {% endif %}
+    </table>
+  {% else %}
+    <p> {{errror}} </p>
+  {% endif %}
+
+{% endblock %}

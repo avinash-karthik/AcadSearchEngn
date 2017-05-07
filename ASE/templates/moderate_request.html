@@ -1,0 +1,48 @@
+{# Moderate a request #}
+
+{% extends "base.html" %}
+
+{% load tags %}
+
+{% if userRequest %}
+  {% block title %} Moderate {% endblock %}
+{% endif %}
+
+{% block content %}
+  
+  {% if userRequest %}
+    <div class="jumbotron">
+      <h3>Status: {{userRequest.status}}</h3>
+      {% include 'request_form.html' %}
+    </div>
+
+    {% ifequal userRequest.status 'Pending' %}
+      <div class="jumbotron">
+        <form class="form" action="." method="POST">
+          {% csrf_token %}
+          <div class="form-group">
+            <label for="comment">Comment:</label>
+            <textarea rows="5" name="feedback" class="form-control"></textarea>
+          </div>
+          <div class="form-group">
+            <button type="submit" name="moderation_action" class="btn btn-success" value="Approve">Approve</button>
+            <button type="submit" name="moderation_action" class="btn btn-danger" value="Reject">Reject</button>
+          </div>
+        </form>
+      </div>
+    {% else %}
+      <div class="jumbotron">
+        <form class="form">
+          <div class="form-group">
+            <label for="comment">Comment:</label>
+            <textarea rows="5" class="form-control" id="comment" readonly>{{userRequest.feedback}}</textarea>
+          </div>
+        </form>
+      </div>
+    {% endifequal %}
+
+  {% else %}
+    <p> {{error}} </p>
+  {% endif %}
+
+{% endblock %}

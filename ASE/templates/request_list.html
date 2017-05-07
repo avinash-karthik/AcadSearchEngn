@@ -1,0 +1,19 @@
+{# Shows a list of requests and groups them by type #}
+
+<p>{{num_requests}} request{{num_requests|pluralize}} found{% if num_requests %}:{% endif %}</p>
+{% for status,status_requests in requests.items %}
+  {% if status_requests|length %}
+    <ul class="list-group">
+      <p> {{status}} Requests: </p>
+      {% for statusRequest in status_requests %}
+        <li class="list-group-item">
+        <div class="search-result">
+          <span>
+            <a href="{{statusRequest.url}}">{{ statusRequest.heading }}</a>
+          </span>
+        </div>
+        </li>
+      {% endfor %}
+    </ul>
+  {% endif %}
+{% endfor %}
